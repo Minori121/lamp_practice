@@ -28,7 +28,7 @@ function insert_history_detail($db, $history_id, $carts){
         )
       VALUES(?, ?, ?, ?);
       ";
-    return execute_query($db, $sql, array($history_id, $cart['item_id'], $cart['amount'], $cart['price']));
+    execute_query($db, $sql, array($history_id, $cart['item_id'], $cart['amount'], $cart['price']));
   }
 }
 
