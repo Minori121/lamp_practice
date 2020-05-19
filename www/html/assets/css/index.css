@@ -1,4 +1,9 @@
 .item {
   margin-top: 10px;
 }
-
+.order-form {
+  margin: 10px 0 0 300px;
+}
+.top-contents {
+  display:flex;
+}

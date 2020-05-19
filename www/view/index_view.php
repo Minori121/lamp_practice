@@ -2,16 +2,27 @@
 <html lang="ja">
 <head>
   <?php include VIEW_PATH . 'templates/head.php'; ?>
-  
+
   <title>商品一覧</title>
   <link rel="stylesheet" href="<?php print(STYLESHEET_PATH . 'index.css'); ?>">
+  <script type="text.javascript" src="<?php print(JAVASCRIPT_PATH . 'index.js'); ?>"></script>
 </head>
 <body>
   <?php include VIEW_PATH . 'templates/header_logined.php'; ?>
-  
+
 
   <div class="container">
-    <h1>商品一覧</h1>
+    <div class="top-contents">
+      <h1>商品一覧</h1>
+      <form class="order-form" name="orderform" >
+        <select id="order"  name="order">
+          <option value="1">新着順</option>
+          <option value="2">価格の安い順</option>
+          <option value="3">価格の高い順</option>
+        </select>
+        <input type="submit" value="並び替える">
+      </form>
+    </div>
     <?php include VIEW_PATH . 'templates/messages.php'; ?>
 
     <div class="card-deck">
@@ -42,6 +53,6 @@
       </div>
     </div>
   </div>
-  
+
 </body>
 </html>
