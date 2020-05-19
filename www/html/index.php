@@ -12,7 +12,8 @@ if(is_logined() === false){
 
 $db = get_db_connect();
 $user = get_login_user($db);
+$order = get_get('order');
 
-$items = get_open_items($db);
+$items = get_open_items($db,$order);
 
 include_once VIEW_PATH . 'index_view.php';

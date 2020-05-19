@@ -7,7 +7,7 @@ require_once MODEL_PATH . 'db.php';
 function get_item($db, $item_id){
   $sql = "
     SELECT
-      item_id, 
+      item_id,
       name,
       stock,
       price,
@@ -22,10 +22,10 @@ function get_item($db, $item_id){
   return fetch_query($db, $sql,array($item_id));
 }
 
-function get_items($db, $is_open = false){
+function get_items_admin($db, $is_open = false){
   $sql = '
     SELECT
-      item_id, 
+      item_id,
       name,
       stock,
       price,
@@ -43,12 +43,45 @@ function get_items($db, $is_open = false){
   return fetch_all_query($db, $sql);
 }
 
-function get_all_items($db){
-  return get_items($db);
+function get_items_index($db, $order, $is_open = false){
+  $sql = '
+    SELECT
+      item_id,
+      name,
+      stock,
+      price,
+      image,
+      status,
+      created
+    FROM
+      items
+  ';
+  if(($is_open === true) && ($order === '2')) {
+    $sql .= '
+      WHERE status = 1
+      ORDER BY price
+    ';
+  } else if(($is_open === true) && ($order === '3')) {
+    $sql .= '
+      WHERE status = 1
+      ORDER BY price DESC
+    ';
+  } else if($is_open === true){
+    $sql .= '
+      WHERE status = 1
+      ORDER BY created DESC
+    ';
+  }
+
+  return fetch_all_query($db, $sql);
 }
 
-function get_open_items($db){
-  return get_items($db, true);
+function get_all_items($db){
+  return get_items_admin($db);
+}
+
+function get_open_items($db, $order){
+  return get_items_index($db, $order, true);
 }
 
 function regist_item($db, $name, $price, $stock, $status, $image){
@@ -61,14 +94,14 @@ function regist_item($db, $name, $price, $stock, $status, $image){
 
 function regist_item_transaction($db, $name, $price, $stock, $status, $image, $filename){
   $db->beginTransaction();
-  if(insert_item($db, $name, $price, $stock, $filename, $status) 
+  if(insert_item($db, $name, $price, $stock, $filename, $status)
     && save_image($image, $filename)){
     $db->commit();
     return true;
   }
   $db->rollback();
   return false;
-  
+
 }
 
 function insert_item($db, $name, $price, $stock, $filename, $status){
@@ -98,7 +131,7 @@ function update_item_status($db, $item_id, $status){
       item_id = ?
     LIMIT 1
   ";
-  
+
   return execute_query($db, $sql, array($status, $item_id));
 }
 
@@ -112,7 +145,7 @@ function update_item_stock($db, $item_id, $stock){
       item_id = ?
     LIMIT 1
   ";
-  
+
   return execute_query($db, $sql, array($stock, $item_id));
 }
 
@@ -139,7 +172,7 @@ function delete_item($db, $item_id){
       item_id = ?
     LIMIT 1
   ";
-  
+
   return execute_query($db, $sql, array($item_id));
 }
 
